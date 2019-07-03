@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>气泡</title>
+   <style>
+      canvas {
+         position: absolute;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         top: 0;
+         margin: auto;
+         background: gainsboro;
+      }
+   </style>
+</head>
+<body>
+<canvas width="200" height="400"></canvas>
+<script type="text/javascript">
+  var oc = document.querySelector('canvas')
+  var points = []
+  // 生成泡泡参数
+  setInterval(function () {
+    var x = Math.random() * oc.width
+    var r = Math.random() * 10 + 5
+    var y = oc.height - r
+    var startX = x
+    var startY = y
+    var deg = 0
+    var step = Math.random() * 10 + 25
+
+    var red = Math.random() * 255
+    var green = Math.random() * 255
+    var blue = Math.random() * 255
+    var alpha = 1
+    points.push({
+      startX: startX,
+      startY: startY,
+      x: x,
+      y: y,
+      r: r,
+      red: red,
+      green: green,
+      blue: blue,
+      alpha: alpha,
+      deg: deg,
+      step: step
+    })
+  }, 60)
+
+  // 画泡泡
+  if (oc.getContext) {
+    var ctx = oc.getContext('2d')
+    setInterval(function () {
+      ctx.clearRect(0, 0, oc.width, oc.height)
+      for (var i = 0; i < points.length; i++) {
+        // 动画效果
+        points[i].alpha -= 0.005
+        points[i].deg += 8
+        points[i].y = points[i].startY - points[i].deg * Math.PI / 180 * points[i].step
+        points[i].x = points[i].startX + Math.sin(points[i].deg * Math.PI / 180) * points[i].step
+        if (points[i].y <= 20) {
+          points.splice(i, 1)
+        }
+
+
+        ctx.save()
+        ctx.fillStyle = 'rgba(' + points[i].red + ', ' + points[i].green + ', ' + points[i].blue + ',' + points[i].alpha + ')'
+        ctx.beginPath()
+        ctx.arc(points[i].x, points[i].y, points[i].r, 0, 2 * Math.PI)
+        ctx.fill()
+        ctx.restore()
+        console.log(points.length)
+      }
+
+    }, 1000 / 50)
+
+
+  }
+</script>
+</body>
+</html>
