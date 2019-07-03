@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>Title</title>
+   <style>
+      * {
+         margin: 0;
+         padding: 0;
+      }
+
+      #index {
+         top: 300px;
+         left: 100px;
+         position: absolute;
+         width: 10px;
+         height: 10px;
+         border-radius: 50%;
+         background: black;
+      }
+
+      .box {
+         position: absolute;
+         border: 1px solid;
+      }
+   </style>
+</head>
+<body>
+<div id="index"></div>
+<!--<script type="text/javascript">-->
+<!--  var startX = index.offsetLeft-->
+<!--  var startY = index.offsetTop-->
+<!--  var deg = 0-->
+<!--  var step = 100-->
+<!--  setInterval(function () {-->
+<!--    index.style.left = startX + deg*Math.PI / 180 * step / 2  + 'px'-->
+<!--    index.style.top = startY  + Math.sin(deg*Math.PI / 180) *2 * step + 'px'-->
+<!--    var point = document.createElement('div')-->
+<!--    point.classList.add('box')-->
+<!--    point.style.left = index.style.left-->
+<!--    point.style.top = index.style.top-->
+<!--    document.body.appendChild(point)-->
+<!--    deg += 1-->
+<!--    console.log(1)-->
+<!--  },1000/60)-->
+
+<!--</script>-->
+
+
+<!--jQuery-->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+  $(function () {
+    var $index = $('#index')
+    var startX = $index.offset().left
+    var startY = $index.offset().top
+    var deg = 0
+    var step = 100
+    setInterval(function () {
+
+      $index.css('left', startX + deg * Math.PI / 180 * step / 2 )
+      $index.css('top', startY + Math.sin(deg * Math.PI / 180) * step * 2)
+      var $point = $('<div></div>')
+      $point.addClass('box')
+      $point.css('left', $index.css('left'))
+      $point.css('top', $index.css('top'))
+      console.log($point[0])
+      $(document.body).append($point)
+      deg += 1
+
+    },1000 / 60)
+  })
+</script>
+</body>
+</html>
