@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>My_page</title>
+   <style>
+      /*css reset*/
+      html, body {
+         height: 100%;
+         overflow: hidden;
+      }
+
+      html, body, h1, h2, h3, h4, h5, h6, p, ul, li {
+         margin: 0;
+         padding: 0;
+         font: 14px "微软雅黑";
+      }
+
+      a {
+         text-decoration: none;
+         display: block;
+      }
+
+      li {
+         list-style: none;
+      }
+
+      img {
+         display: block;
+      }
+
+      .clearfix {
+         *zoom: 1;
+      }
+
+      .clearfix:after {
+         content: "";
+         display: block;
+         clear: both;
+      }
+
+      /*头部样式*/
+      #header {
+         position: relative;
+         width: 1100px;
+         height: 80px;
+         margin: 0 auto;
+         background: white;
+      }
+
+      #header .logo {
+         float: left;
+         margin-top: 30px;
+      }
+
+      #header .list {
+         float: right;
+         margin-top: 50px;
+      }
+
+      #header .list > li {
+         position: relative;
+         float: left;
+         margin-left: 40px;
+      }
+
+      #header .list > li > a > .up {
+         position: absolute;
+         color: black;
+         width: 0;
+         overflow: hidden;
+      }
+
+      #header .list > li > a:hover .up {
+         width: 100%;
+         transition: 1s width;
+      }
+
+      #header .arrow {
+         position: absolute;
+         left: 50%;
+         bottom: -11px;
+         width: 21px;
+         height: 11px;
+         background: url("img/menuIndicator.png");
+         transition: 1s;
+      }
+
+      #wrap #content {
+         width: 1100px;
+         height: 520px;
+         background: gray;
+         margin: 0 auto;
+      }
+   </style>
+</head>
+<body>
+<section id="wrap">
+   <header id="header">
+      <div class="logo">
+         <h1><img src="img/logo.png" alt=""></h1>
+      </div>
+      <nav class="nav">
+         <ul class="list clearfix">
+            <li>
+               <a href="javascript:;">
+                  <div class="up"><img src="img/home_gruen.png" alt=""></div>
+                  <div><img src="img/home.png" alt=""></div>
+               </a>
+            </li>
+            <li>
+               <a href="javascript:;">
+                  <div class="up">Course</div>
+                  <div>Course</div>
+               </a>
+            </li>
+            <li>
+               <a href="javascript:;">
+                  <div class="up">Works</div>
+                  <div>Works</div>
+               </a>
+            </li>
+            <li>
+               <a href="javascript:;">
+                  <div class="up">About</div>
+                  <div>About</div>
+               </a>
+            </li>
+            <li>
+               <a href="javascript:;">
+                  <div class="up">Team</div>
+                  <div>Team</div>
+
+               </a>
+            </li>
+         </ul>
+      </nav>
+      <div class="arrow"></div>
+   </header>
+   <div id="content"></div>
+   <script type="text/javascript">
+     window.onload = function () {
+       var arrow = document.querySelector('#header .arrow')
+       var lis = document.querySelectorAll(' #header .list > li')
+       var ups = document.querySelectorAll('#header .list > li > a > .up')
+
+       // 初始化
+       change(0)
+
+       // 监听绑定
+         for(var i = 0; i < lis.length; i++){
+           lis[i].index = i
+           lis[i].onclick = function () {
+            change(this.index)
+         }
+       }
+       // // 闭包实现
+       // for (var j = 0; j < lis.length; j++) {
+       //   (function (j) {
+       //     lis[j].onclick = function () {
+       //       // 按钮切换
+       //       console.log(j)
+       //       changeNav(j)
+       //       // 箭头移动
+       //       changeArrow(j)
+       //     }
+       //   })(j)
+       // }
+
+
+
+     // 切换函数
+     function change(index) {
+       for (var i = 0; i < lis.length; i++) {
+         if (i !== index) {
+           ups[i].style.width = ''
+         }
+         else {
+           ups[i].style.width =' 100%'
+         }
+         arrow.style.left = lis[index].offsetLeft + lis[index].offsetWidth / 2 - arrow.offsetWidth / 2 + 'px'
+
+       }
+     }
+
+
+
+     } //onload
+   </script>
+</section>
+</body>
+</html>
