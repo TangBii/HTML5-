@@ -13,7 +13,8 @@
       html, body, h1, h2, h3, h4, h5, h6, p, ul, li {
          margin: 0;
          padding: 0;
-         font: 14px "微软雅黑";
+         font-size:14px;
+         font-family: '微软雅黑', sans-serif;
       }
 
       a {
@@ -27,6 +28,10 @@
 
       img {
          display: block;
+      }
+
+      .commonTitle{ color:#009ee0; font-size:80px; line-height:0.8;
+         font-weight:bold; letter-spacing:-5px;
       }
 
       .clearfix {
@@ -97,14 +102,17 @@
          width: 100%;
          background: pink;
       }
-      #content{
+
+      #content {
          width: 100%;
          overflow: hidden;
       }
-      #content .contentList{
+
+      #content .contentList {
          position: relative;
          transition: 1s;
       }
+
       #content .contentList li {
          position: relative;
          width: 100%;
@@ -114,8 +122,8 @@
       }
 
       #content .contentList li > div {
-         position:absolute;
-         top:0;
+         position: absolute;
+         top: 0;
          bottom: 0;
          left: 0;
          right: 0;
@@ -124,11 +132,90 @@
          height: 520px;
          background: orange;
       }
-      #content .contentList .home{background-image: url("img/bg1.jpg")}
-      #content .contentList .course{background-image: url("img/bg2.jpg")}
-      #content .contentList .works{background-image: url("img/bg3.jpg")}
-      #content .contentList .about{background-image: url("img/bg4.jpg")}
-      #content .contentList .team{background-image: url("img/bg5.jpg")}
+
+      #content .contentList .home {
+         background-image: url("img/bg1.jpg")
+      }
+
+      #content .contentList .course {
+         background-image: url("img/bg2.jpg")
+      }
+
+      #content .contentList .works {
+         background-image: url("img/bg3.jpg")
+      }
+      #content .contentList .works .header{
+         margin: 50px 0 100px 50px;
+      }
+      #content .contentList .works .content{
+         margin-left: 50px;
+      }
+      #content .contentList .works .content > .item{
+         position: relative;
+         float: left;
+         width: 220px;
+         height:133px;
+         margin: 0 1px;
+         overflow: hidden;
+      }
+      #content .contentList .works .content > .item:last-child{
+         width: 332px;
+         height: 133px;
+      }
+      #content .contentList .works .content > .item > .mask{
+         position: absolute;
+         opacity:0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         top:0;
+         background:rgba(25,25,25,0.8);
+         color: white;
+         box-sizing: border-box;
+         padding: 15px;
+         text-align: center;
+         transition: .8s opacity;
+      }
+      #content .contentList .works .content > .item:hover .mask{
+         opacity: .8;
+      }
+      #content .contentList .works .content > .item:hover img{
+         transition: 1s transform;
+         transform: rotate(30deg) scale(1.5);
+      }
+      #content .contentList .works .content > .item > .mask  .icon{
+         width: 32px;
+         height: 34px;
+         margin: 0 auto;
+         margin-top: 10px;
+         overflow: hidden;
+         background: url("img/zoomico.png") no-repeat;
+      }
+      #content .contentList .works .content > .item > .mask  .icon:hover{
+         background-position: 0 -36px;
+      }
+      #content .contentList .works .decoration{
+         position: absolute;
+         left: 900px;
+         top:170px;
+         width: 167px;
+         height: 191px;
+         background:url("img/robot.png") no-repeat;
+         animation: robotMove infinite linear 3s;
+      }
+      @keyframes robotMove {
+         0%{transform: translateX(0px) rotateY(0deg)}
+         49%{transform: translateX(-480px) rotateY(0deg)}
+         50%{transform: translateX(-500px) rotateY(180deg)}
+         100%{transform: translateX(0px) rotateY(180deg)}
+      }
+      #content .contentList .about {
+         background-image: url("img/bg4.jpg")
+      }
+
+      #content .contentList .team {
+         background-image: url("img/bg5.jpg")
+      }
 
    </style>
 </head>
@@ -181,19 +268,56 @@
       <div id="content">
          <ul class="contentList">
             <li class="home">
-               <div >home</div>
+               <div>home</div>
             </li>
             <li class="course">
-               <div >course</div>
+               <div>course</div>
             </li>
             <li class="works">
-               <div >works</div>
+               <div>
+                  <div class="header">
+                     <p class="commonTitle">EINBLICK</p>
+                     <p class="commonTitle">ERKENNTNIS</p>
+                     <p class="commonTitle">ERGEBNIS </p>
+                  </div>
+                  <div class="content">
+                     <div class="item">
+                        <img src="img/worksimg1.jpg" alt="">
+                        <div class="mask">
+                           <span>华中科技大学</span>
+                           <a href="javascript:;"><div class="icon"></div></a>
+                        </div>
+                     </div>
+                     <div class="item">
+                        <img src="img/worksimg2.jpg" alt="">
+                        <div class="mask">
+                           <span>管理学院</span>
+                           <a href="javascript:;"><div class="icon"></div></a>
+                        </div>
+                     </div>
+                     <div class="item">
+                        <img src="img/worksimg3.jpg" alt="">
+                        <div class="mask">
+                           <span>信息管理与信息系统</span>
+                           <a href="javascript:;"><div class="icon"></div></a>
+                        </div>
+                     </div>
+                     <div class="item">
+                        <img src="img/worksimg4.jpg" alt="">
+                        <div class="mask">
+                           <span>Web应用开发与设计</span>
+                           <a href="javascript:;"><div class="icon"></div></a>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="decoration"></div>
+               </div>
             </li>
             <li class="about">
-               <div >about</div>
+               <div>about</div>
             </li>
             <li class="team">
-               <div >team</div>
+               <div>team</div>
             </li>
          </ul>
       </div>
@@ -209,16 +333,17 @@
        var contentLis = document.querySelectorAll('#content .contentList li')
        var index = 0
        var timer = 0
-
        // 初始化
-       change(0)
        contentInitial()
+
        function contentInitial() {
          contentWrap.style.height = document.documentElement.clientHeight - headerWrap.offsetHeight + 'px'
          for (var i = 0; i < contentLis.length; i++) {
            contentLis[i].style.height = document.documentElement.clientHeight - headerWrap.offsetHeight + 'px'
          }
        }
+
+       change(2)
        window.onresize = function () {
          contentWrap.style.height = document.documentElement.clientHeight - headerWrap.offsetHeight + 'px'
          contentInitial()
@@ -247,9 +372,9 @@
        // }
 
        // 滚轮事件
-       if(contentWrap.addEventListener){
+       if (contentWrap.addEventListener) {
          contentWrap.addEventListener('DOMMouseScroll', function (ev) {
-           ev = ev||event
+           ev = ev || event
            clearInterval(timer)
            timer = setTimeout(function () {
              scrollChange(ev)
@@ -257,7 +382,7 @@
          })
        }
        contentWrap.onmousewheel = function (ev) {
-         ev = ev||event
+         ev = ev || event
          clearInterval(timer)
          timer = setTimeout(function () {
            scrollChange(ev)
@@ -265,27 +390,29 @@
        }
 
        function scrollChange(ev) {
-           var direct = -ev.wheelDelta || ev.detail
-           if(direct > 0 && index !== 4){
-             index++
-             change(index)
-           }
-           else if(direct < 0 && index !== 0){
-             index--
-             change(index)
-           }
+         console.log(index)
+         var direct = -ev.wheelDelta || ev.detail
+         if (direct > 0 && index !== 4) {
+           index++
+           change(index)
+         } else if (direct < 0 && index !== 0) {
+           index--
+           change(index)
+         }
        }
+
        // 切换函数
-       function change(index) {
+       function change(index1) {
          for (var i = 0; i < lis.length; i++) {
-           if (i !== index) {
+           if (i !== index1) {
              ups[i].style.width = ''
            } else {
              ups[i].style.width = ' 100%'
            }
-           arrow.style.left = lis[index].offsetLeft + lis[index].offsetWidth / 2 - arrow.offsetWidth / 2 + 'px'
-           contentList.style.top = -index * contentLis[index].offsetHeight + 'px'
          }
+         index = index1
+         arrow.style.left = lis[index1].offsetLeft + lis[index1].offsetWidth / 2 - arrow.offsetWidth / 2 + 'px'
+         contentList.style.top = -index1 * contentLis[index1].offsetHeight + 'px'
        }
 
 
