@@ -208,6 +208,7 @@
        var contentList = document.querySelector('#content .contentList')
        var contentLis = document.querySelectorAll('#content .contentList li')
        var index = 0
+       var timer = 0
 
        // 初始化
        change(0)
@@ -246,29 +247,33 @@
        // }
 
        // 滚轮事件
-       if(contentWrap.addEventListener()){
-         contentWrap.addEventListener('DOMMouseScroll', fn)
+       if(contentWrap.addEventListener){
+         contentWrap.addEventListener('DOMMouseScroll', function (ev) {
+           ev = ev||event
+           clearInterval(timer)
+           timer = setTimeout(function () {
+             scrollChange(ev)
+           }, 500)
+         })
        }
-       contentWrap.onmousewheel = fn
-       var flag = true
-       function fn(ev) {
-         if(flag){
-           flag = false
-           ev = ev || event
-           if(ev.wheelDelta){
-             ev.wheelDelta = -ev.wheelDelta
-           }
-           var direct = ev.wheelDelta || ev.detail
+       contentWrap.onmousewheel = function (ev) {
+         ev = ev||event
+         clearInterval(timer)
+         timer = setTimeout(function () {
+           scrollChange(ev)
+         }, 200)
+       }
+
+       function scrollChange(ev) {
+           var direct = -ev.wheelDelta || ev.detail
            if(direct > 0 && index !== 4){
              index++
              change(index)
            }
-           else if(index !== 0){
+           else if(direct < 0 && index !== 0){
              index--
              change(index)
            }
-         }
-
        }
        // 切换函数
        function change(index) {
