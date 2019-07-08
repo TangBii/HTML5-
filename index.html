@@ -114,15 +114,14 @@
          transition: 1s;
       }
 
-      #content .contentList li {
+      #content .contentList > li {
          position: relative;
          width: 100%;
-         background: rebeccapurple;
          background-position: 50% 50%;
          background-repeat: no-repeat;
       }
 
-      #content .contentList li > div {
+      #content .contentList > li > div {
          position: absolute;
          top: 0;
          bottom: 0;
@@ -131,9 +130,69 @@
          margin: auto;
          width: 1100px;
          height: 520px;
-         background: orange;
+         /*background: orange;*/
       }
-
+      #content .contentList .imgs{perspective: 1000px;transform-style: preserve-3d}
+      #content .contentList .imgs,#content .contentList .imgs > li{
+         position: absolute;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         top: 0;
+         color: white;
+         visibility: hidden;
+      }
+      #content .contentList .imgs > li:first-child{background:#dc6c5f;visibility: visible}
+      #content .contentList .imgs > li:nth-child(2){background:#95dc84;}
+      #content .contentList .imgs > li:nth-child(3){background:#64b9d2;}
+      #content .contentList .imgs > li:nth-child(4){background:#000000;}
+      #content .contentList .imgs > li > div {
+         text-align: center;
+         margin-top: 200px;
+      }
+      #content .contentList .imgs > li.leftHide{animation: leftHide linear 1s;visibility: hidden; }
+      #content .contentList .imgs > li.leftShow{animation: leftShow linear 1s;visibility: visible;  }
+      #content .contentList .imgs > li.rightHide{animation: rightHide linear 1s;visibility: hidden; }
+      #content .contentList .imgs > li.rightShow{animation: rightShow linear 1s;visibility:visible; }
+      @keyframes leftHide {
+         0%{visibility: visible;}
+         50%{transform: translateX(-40%) rotateY(30deg) scale(.8);}
+         100%{transform: translateZ(-200px);}
+      }
+      @keyframes rightShow{
+         0%{visibility: visible; transform: translateZ(-200px);}
+         50%{transform: translateX(40%)  rotateY(-30deg) scale(.8);}
+         100%{}
+      }
+      @keyframes rightHide {
+         0%{visibility: visible;}
+         50%{transform: translateX(40%)  rotateY(-30deg) scale(.8);}
+         100%{transform: translateZ(-200px);}
+      }
+      @keyframes leftShow {
+         0%{visibility: visible; transform: translateZ(-200px);}
+         50%{transform: translateX(-40%) rotateY(30deg) scale(.8)}
+         100%{}
+      }
+      #content .contentList .nav {
+         position: absolute;
+         bottom: 0;
+         width: 100%;
+         text-align: center;
+      }
+      #content .contentList .nav > li{
+         display: inline-block;
+         width: 20px;
+         height: 20px;
+         border-radius: 50%;
+         background:rgba(255,255,255,0.5);
+         box-shadow: 0 0 4px rgba(25,25,25,0.8);
+         cursor: pointer;
+      }
+      #content .contentList .nav > li.active{
+         background-color: white;
+         cursor: auto;
+      }
       #content .contentList .home {
          background-image: url("img/bg1.jpg")
       }
@@ -344,7 +403,20 @@
       <div id="content">
          <ul class="contentList">
             <li class="home">
-               <div>home</div>
+               <div>
+                  <ul class="imgs">
+                     <li class="commonTitle"><div>one layer</div></li>
+                     <li class="commonTitle"><div>two layer</div></li>
+                     <li class="commonTitle"><div>three layer</div></li>
+                     <li class="commonTitle"><div>four layer</div></li>
+                  </ul>
+                  <ul class="nav">
+                     <li class="active"></li>
+                     <li></li>
+                     <li></li>
+                     <li></li>
+                  </ul>
+               </div>
             </li>
             <li class="course">
                <div>
@@ -474,26 +546,52 @@
        var contentWrap = document.getElementById('contentWrap')
        var headerWrap = document.getElementById('headerWrap')
        var contentList = document.querySelector('#content .contentList')
-       var contentLis = document.querySelectorAll('#content .contentList li')
+       var contentLis = document.querySelectorAll('#content .contentList > li')
        var lines = document.querySelectorAll('#content .contentList .line > span')
+       var navs = document.querySelectorAll('#content .contentList .nav > li')
+       var imgs = document.querySelectorAll('#content .contentList .imgs > li')
+       var imgWrap = document.querySelector('#content .contentList .imgs')
+       var animationList = {leftHide:'leftHide', leftShow:'leftShow',rightHide: 'rightHide', rightShow:'rightShow'}
        var index = 0
        var timer = 0
+       var preIndex = 0
+       var imgTimer = 0
+
+
        // 初始化
        contentInitial()
-
        function contentInitial() {
          contentWrap.style.height = document.documentElement.clientHeight - headerWrap.offsetHeight + 'px'
          for (var i = 0; i < contentLis.length; i++) {
            contentLis[i].style.height = document.documentElement.clientHeight - headerWrap.offsetHeight + 'px'
          }
        }
-
-       change(1)
+       change(0)
+       autoPlay(1)
        window.onresize = function () {
          contentWrap.style.height = document.documentElement.clientHeight - headerWrap.offsetHeight + 'px'
          contentInitial()
        }
 
+       // 第一屏轮播
+       for(var i = 0; i < navs.length; i++){
+         (function (i) {
+           navs[i].onclick = function () {
+             navChange(i)
+             imgChange(i)
+           }
+         })(i)
+       }
+
+       // 鼠标移入停止轮播
+         imgWrap.onmouseenter = function () {
+           clearInterval(imgTimer)
+         }
+
+       //鼠标移出重新开始轮播
+       imgWrap.onmouseleave = function () {
+        autoPlay(preIndex+1)
+       }
 
        // 监听绑定
        for (var i = 0; i < lis.length; i++) {
@@ -503,7 +601,7 @@
            change(this.index)
          }
        }
-       // // 闭包实现
+        // 闭包实现
        // for (var j = 0; j < lis.length; j++) {
        //   (function (j) {
        //     lis[j].onclick = function () {
@@ -550,10 +648,62 @@
 
 
 
+      // 轮播导航点切换函数
+       function navChange(index) {
+         for(var i = 0; i < navs.length; i++){
+           if(i !== index){
+             navs[i].classList.remove('active')
+           }
+           else {
+             navs[i].classList.add('active')
+           }
+         }
+       }
+
+       // 轮播图片切换函数
+      function imgChange(index) {
+        if(index > preIndex){
+          animationChange(index, 'rightShow')
+          animationChange(preIndex, 'leftHide')
+        }
+        else {
+          animationChange(index, 'leftShow')
+          animationChange(preIndex, 'rightHide')
+        }
+        preIndex = index
+      }
 
 
+      //自动轮播
+       function autoPlay(index) {
+         clearInterval(imgTimer)
+         imgTimer = setInterval( function () {
+           if(!index || index === imgs.length){index = 0}
+           navChange(index)
+           imgChange(index)
+           index++
+         },1800)
+       }
+
+
+
+
+
+      // 动画切换函数
+      function animationChange(index, ani){
+         for(item in animationList){
+           if(item !== ani){
+             imgs[index].classList.remove(item)
+           }
+           else if(item === ani){
+             imgs[index].classList.add(item)
+           }
+         }
+       }
+
+
+      // 滚轮响应函数
        function scrollChange(ev) {
-         console.log(index)
          var direct = -ev.wheelDelta || ev.detail
          if (direct > 0 && index !== 4) {
            index++
@@ -564,7 +714,7 @@
          }
        }
 
-       // 切换函数
+       // 头部导航hover切换函数
        function change(index1) {
          for (var i = 0; i < lis.length; i++) {
            if (i !== index1) {
