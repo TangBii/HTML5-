@@ -33,6 +33,7 @@
       .commonTitle{ color:#009ee0; font-size:80px; line-height:0.8;
          font-weight:bold; letter-spacing:-5px;
       }
+      .commonText{ color:white; line-height:1.5; font-size:15px;}
 
       .clearfix {
          *zoom: 1;
@@ -140,7 +141,83 @@
       #content .contentList .course {
          background-image: url("img/bg2.jpg")
       }
+      #content .contentList .course .title{
+         margin: 50px;
+      }
+      #content .contentList .line > span{
+         position: absolute;
+         right: 530px;
+         top:63px;
+         width:9px;
+         height:410px;
+         background:url("img/plus_row.png") no-repeat;
+      }
+      #content .contentList .images{
+         position: absolute;
+         right: 50px;
+         top:70px;
+         width: 480px;
+         height: 396px;
+      }
+      #content .contentList .item{
+         float: left;
+         width: 120px;
+         height: 132px;
+         position: relative;
+         perspective: 200px;
+         transform-style: preserve-3d;
+         backface-visibility: hidden;
+      }
+      #content .contentList .item .face, .backface{
+         position: absolute;
+         left: 0;
+         right: 0;
+         top: 0;
+         bottom: 0;
+      }
+      #content .contentList .item:hover .backface{
+         transform: rotateY(360deg);
+         transition: 1s;
+      }
+      #content .contentList .item:hover .face{
+         transform: rotateY(180deg);
+         transition: 1s;
+      }
+      #content .contentList .item > .backface{
+         box-sizing: border-box;
+         padding: 15px;
+         color: white;
+         background: #009ee0;
+         transform: rotateY(180deg);
+         backface-visibility: hidden;
+      }
 
+      #content .contentList .item > .face{
+         background: url("img/bks.png") no-repeat 50% 50%;
+      }
+      #content .contentList .item:nth-child(2) > .face{
+         background: url("img/tata.png") no-repeat 50% 50%;
+      }
+      #content .contentList .item:nth-child(3) > .face{
+         background: url("img/pcwelt.png") no-repeat 50% 50%;
+      }
+      #content .contentList .item:nth-child(5) > .face{
+         background: url("img/gu.png") no-repeat 50% 50%;
+      }
+      #content .contentList .item:nth-child(7) > .face{
+         background: url("img/hlx.png") no-repeat 50% 50%;
+      }
+      #content .contentList .item:nth-child(9) > .face{
+         background: url("img/lbs.png") no-repeat 50% 50%;
+      }
+      #content .contentList .item:nth-child(11) > .face{
+         background: url("img/leonberg.png") no-repeat 50% 50%;
+      }
+
+      #content .contentList .course  .intro{
+         width: 400px;
+         margin-left: 50px;
+      }
       #content .contentList .works {
          background-image: url("img/bg3.jpg")
       }
@@ -212,7 +289,6 @@
       #content .contentList .about {
          background-image: url("img/bg4.jpg")
       }
-
       #content .contentList .team {
          background-image: url("img/bg5.jpg")
       }
@@ -271,7 +347,75 @@
                <div>home</div>
             </li>
             <li class="course">
-               <div>course</div>
+               <div>
+                  <div class="title">
+                     <p class="commonTitle">EINIGE </p>
+                     <p class="commonTitle">UNSERER </p>
+                     <p class="commonTitle">KUNDEN </p>
+                  </div>
+                  <div class="intro">
+                     <p class="commonText">Das Kundenvertrauen in unsere Kompetenz ist die notwendige Basis einer erfolgreichen Zusammenarbeit, gleichzeitig aber auch das größte Lob, das man uns entgegenbringen kann. <br/>Diese und viele weitere große und kleine Kunden vertrauen uns seit Jahren, was uns stolz macht, und dafür sagen wir an dieser Stelle einfach mal. </p>
+                  </div>
+                  <div class="line">
+                     <span></span>
+                     <span></span>
+                     <span></span>
+                     <span></span>
+                     <span></span>
+                  </div>
+                  <div class="images">
+                     <div class="item">
+                        <div class="face"></div>
+                        <div class="backface">School of Management School of Management</div>
+                     </div>
+                     <div class="item">
+                        <div class="face"></div>
+                        <div class="backface">School of Management</div>
+                     </div>
+                     <div class="item">
+                        <div class="face"></div>
+                        <div class="backface">School of Management</div>
+                     </div>
+                     <div class="item">
+                        <div class="face"></div>
+                        <div class="backface">School of Management</div>
+                     </div>
+                     <div class="item">
+                        <div class="face"></div>
+                        <div class="backface">School of Management</div>
+                     </div>
+                     <div class="item">
+                        <div class="face"></div>
+                        <div class="backface">School of Management</div>
+                     </div>
+                     <div class="item">
+                        <div class="face"></div>
+                        <div class="backface">School of Management</div>
+                     </div>
+                     <div class="item">
+                        <div class="face"></div>
+                        <div class="backface">School of Management</div>
+                     </div>
+                     <div class="item">
+                        <div class="face"></div>
+                        <div class="backface">School of Management</div>
+                     </div>
+                     <div class="item">
+                        <div class="face"></div>
+                        <div class="backface">School of Management</div>
+                     </div>
+                     <div class="item">
+                        <div class="face"></div>
+                        <div class="backface">School of Management</div>
+                     </div>
+                     <div class="item">
+                        <div class="face"></div>
+                        <div class="backface">School of Management</div>
+                     </div>
+
+                  </div>
+               </div>
+
             </li>
             <li class="works">
                <div>
@@ -331,6 +475,7 @@
        var headerWrap = document.getElementById('headerWrap')
        var contentList = document.querySelector('#content .contentList')
        var contentLis = document.querySelectorAll('#content .contentList li')
+       var lines = document.querySelectorAll('#content .contentList .line > span')
        var index = 0
        var timer = 0
        // 初始化
@@ -343,7 +488,7 @@
          }
        }
 
-       change(2)
+       change(1)
        window.onresize = function () {
          contentWrap.style.height = document.documentElement.clientHeight - headerWrap.offsetHeight + 'px'
          contentInitial()
@@ -388,6 +533,24 @@
            scrollChange(ev)
          }, 200)
        }
+
+       // 第二屏线的定位
+       for(var i = 1; i < lines.length; i++ ){
+         lines[i].style.right = 525 - 120 * i + 'px'
+       }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
        function scrollChange(ev) {
          console.log(index)
