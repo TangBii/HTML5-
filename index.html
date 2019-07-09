@@ -433,9 +433,65 @@
          background:url("img/greenLine.png");
       }
 
+      /*第五屏*/
       #content .contentList .team {
          background-image: url("img/bg5.jpg")
       }
+      #content .contentList .team .header{
+         float: left;
+         margin: 50px;
+         width: 400px;
+      }
+      #content .contentList .team .text{
+         float: right;
+         margin: 50px;
+         width: 400px;
+      }
+      #content .contentList .team .people{
+         position: absolute;
+         width: 944px;
+         height: 448px;
+         left: 50%;
+         margin-left: -472px;
+         top: 250px;
+      }
+      #content .contentList .team .people > ul{
+         position: absolute;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         top: 0;
+      }
+      #content .contentList .team .people > ul > li{
+         float: left;
+         width: 118px;
+         height: 100%;
+         background: url("img/team.png") no-repeat;
+      }
+
+      /*导航点*/
+      #navPoint > ul{
+         position: fixed;
+         right: 5px;
+         top: 50%;
+      }
+      #navPoint > ul > li{
+         width: 13px;
+         height: 13px;
+         border: 2px solid rgba(238,238,238,.4);
+         border-radius: 50%;
+         margin: 5px;
+         cursor: pointer;
+      }
+      #navPoint > ul > li:hover{
+         border: 2px solid rgba(238,238,238,.8);
+      }
+      #navPoint > ul > li.active{
+         background: #0087c1;
+         border: 2px solid rgba(238,238,238,1);
+      }
+
+
 
    </style>
 </head>
@@ -644,10 +700,40 @@
                </div>
             </li>
             <li class="team">
-               <div>team</div>
+               <div>
+                  <div class="header">
+                     <p class="commonTitle">WIR SIND</p>
+                     <p class="commonTitle">VOXELAIR </p>
+                  </div>
+                  <div class="text">
+                     <p class="commonText">Wir sind seit 2002 eine Full-Service-Werbeagentur mit Stammsitz in Heimsheim, zwischen Stuttgart und Karlsruhe.</p>
+                     <p class="commonText">Über 60 Jahre Erfahrung vereinen das gesamte VoxelAir-Team. Dabei hat jedes Voxel neben professionellem Allroundwissen auch sein ganz spezielles Gebiet, um selbst die individuellsten Kundenwünsche schnell und kompetent umzusetzen</p>
+                  </div>
+                  <div class="people">
+                     <ul>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                     </ul>
+                  </div>
+               </div>
             </li>
          </ul>
       </div>
+   </div>
+   <div id="navPoint">
+      <ul>
+         <li class="active"></li>
+         <li></li>
+         <li></li>
+         <li></li>
+         <li></li>
+      </ul>
    </div>
 </section>
 <script type="text/javascript">
@@ -663,7 +749,10 @@
     var navs = document.querySelectorAll('#content .contentList .nav > li')
     var imgs = document.querySelectorAll('#content .contentList .imgs > li')
     var imgWrap = document.querySelector('#content .contentList .imgs')
+    var team = document.querySelectorAll('#content .contentList .team .people > ul > li')
+    var teamList = document.querySelectorAll('#content .contentList .team .people > ul')
     var animationList = {leftHide:'leftHide', leftShow:'leftShow',rightHide: 'rightHide', rightShow:'rightShow'}
+    var navPoints = document.querySelectorAll('#navPoint > ul > li')
     var index = 0
     var timer = 0
     var preIndex = 0
@@ -678,7 +767,7 @@
         contentLis[i].style.height = document.documentElement.clientHeight - headerWrap.offsetHeight + 'px'
       }
     }
-    change(0)
+    change(4)
     autoPlay(1)
     window.onresize = function () {
       contentWrap.style.height = document.documentElement.clientHeight - headerWrap.offsetHeight + 'px'
@@ -706,7 +795,7 @@
       autoPlay(preIndex+1)
     }
 
-    // 监听绑定
+    // 导航条监听绑定
     for (var i = 0; i < lis.length; i++) {
       lis[i].index = i
       lis[i].onclick = function () {
@@ -750,17 +839,49 @@
       lines[i].style.right = 525 - 120 * i + 'px'
     }
 
+   // team背景位置偏移控制
+   for(var i = 0; i < team.length; i++){
+     team[i].style.backgroundPosition = -118*i + 'px 0'
+   }
+
+   //第五屏气泡效果
+   for(var i = 0; i < team.length; i++ ){
+     (function (i) {
+       team[i].onmouseenter = function () {
+         changeAlpha(i)
+         
+       }
+       team[i].onmouseleave = function () {
+         for(var i = 0; i < team.length; i++){
+           team[i].style.opacity = 1
+         }
+
+       }
+     })(i)
+   }
 
 
 
 
+   //右侧导航
+   for(var i = 0; i < navPoints.length; i++ ){
+     (function (i) {
+       navPoints[i].onclick = function () {
+         index = i
+         change(i)
+       }
+     })(i)
+   }
 
-
-
-
-
-
-
+   
+   // 改变teamList透明度
+   function changeAlpha(index) {
+     for(var i = 0; i < team.length; i++){
+       if(i !== index){
+         team[i].style.opacity = .4
+       }
+     }
+   }
     // 轮播导航点切换函数
     function navChange(index) {
       for(var i = 0; i < navs.length; i++){
@@ -786,7 +907,6 @@
       preIndex = index
     }
 
-
     //自动轮播
     function autoPlay(index) {
       clearInterval(imgTimer)
@@ -797,10 +917,6 @@
         index++
       },1800)
     }
-
-
-
-
 
     // 动画切换函数
     function animationChange(index, ani){
@@ -813,7 +929,6 @@
         }
       }
     }
-
 
     // 滚轮响应函数
     function scrollChange(ev) {
@@ -832,8 +947,10 @@
       for (var i = 0; i < lis.length; i++) {
         if (i !== index1) {
           ups[i].style.width = ''
+          navPoints[i].classList.remove('active')
         } else {
           ups[i].style.width = ' 100%'
+          navPoints[i].classList.add('active')
         }
       }
       index = index1
