@@ -120,6 +120,7 @@
          width: 100%;
          background-position: 50% 50%;
          background-repeat: no-repeat;
+         overflow: hidden;
       }
 
       #content .contentList > li > div {
@@ -204,7 +205,13 @@
          background-image: url("img/bg2.jpg")
       }
       #content .contentList .course .title{
+         position: relative;
+         z-index:2;
          margin: 50px;
+         }
+      #content .contentList .course .intro{
+         position: relative;
+         z-index:2;
       }
       #content .contentList .course .line > span{
          position: absolute;
@@ -220,6 +227,7 @@
          top:70px;
          width: 480px;
          height: 396px;
+         z-index:2;
       }
       #content .contentList .course  .item{
          float: left;
@@ -282,9 +290,13 @@
          background-image: url("img/bg3.jpg")
       }
       #content .contentList .works .header{
+         position: relative;
+         z-index: 2;
          margin: 50px 0 100px 50px;
       }
       #content .contentList .works .content{
+         position: relative;
+         z-index: 2;
          margin-left: 50px;
       }
       #content .contentList .works .content > .item{
@@ -333,6 +345,7 @@
       }
       #content .contentList .works .decoration{
          position: absolute;
+         z-index: 2;
          left: 900px;
          top:170px;
          width: 167px;
@@ -495,6 +508,16 @@
          border: 2px solid rgba(238,238,238,1);
       }
 
+      /*出入场动画*/
+      .plane1{ width:359px; height:283px; background:url(img/plane1.png) no-repeat; position:absolute; left:300px; top:-100px; transition:1s;}
+      .plane2{ width:309px; height:249px; background:url(img/plane2.png) no-repeat; position:absolute; left:-100px; top:200px; transition:1s;}
+      .plane3{ width:230px; height:182px; background:url(img/plane3.png) no-repeat; position:absolute; left:300px; top:400px; transition:1s;}
+      .works .pencil1{ width:180px; height:97px; background:url(img/pencel1.png) no-repeat; position:absolute; transition:1s; left:500px; top:0;}
+      .works .pencil2{ width:268px; height:38px; background:url(img/pencel2.png) no-repeat; position:absolute; transition:1s; left:300px; top:250px;}
+      .works .pencil3{ width:441px; height:231px; background:url(img/pencel3.png) no-repeat; position:absolute; transition:1s; left:650px; top:300px;}
+      .home .imgs,.home .nav,.about .imgs > .item,.team .header, .team .text{
+         transition: 1s transform;
+      }
 
 
    </style>
@@ -631,6 +654,9 @@
                      </div>
 
                   </div>
+                  <div class="plane1"></div>
+                  <div class="plane2"></div>
+                  <div class="plane3"></div>
                </div>
 
             </li>
@@ -672,6 +698,9 @@
                      </div>
                   </div>
                   <div class="decoration"></div>
+                  <div class="pencil1"></div>
+                  <div class="pencil2"></div>
+                  <div class="pencil3"></div>
                </div>
             </li>
             <li class="about">
@@ -758,6 +787,18 @@
     var teamWrap = document.querySelector('#content .contentList .team .people')
     var animationList = {leftHide:'leftHide', leftShow:'leftShow',rightHide: 'rightHide', rightShow:'rightShow'}
     var navPoints = document.querySelectorAll('#navPoint > ul > li')
+    var itemUp =  document.querySelector('.home .imgs')
+    var itemDown = document.querySelector('.home .nav')
+    var plane1 = document.querySelector('.plane1')
+    var plane2 = document.querySelector('.plane2')
+    var plane3 = document.querySelector('.plane3')
+    var pencil1 = document.querySelector('.pencil1')
+    var pencil2 = document.querySelector('.pencil2')
+    var pencil3 = document.querySelector('.pencil3')
+    var pictures = document.querySelectorAll('.about .imgs > .item')
+    var title = document.querySelector('.team .header')
+    var text = document.querySelector('.team .text')
+    var oldIndex = 0
     var index = 0
     var timer = 0
     var preIndex = 0
@@ -766,20 +807,87 @@
     var ocList = []
     var bubbleTimer1 = null
     var bubbleTimer2 = null
+    // 出入场动画
+    var animations = [
+      {
+        pageIn : function () {
+          var itemUp =  document.querySelector('.home .imgs')
+          var itemDown = document.querySelector('.home .nav')
+          itemUp.style.transform = 'translateY(0px)'
+          itemDown.style.transform = 'translateY(0px)'
+        },
+        pageOut : function () {
+          itemUp.style.transform = 'translateY(-400px)'
+          itemDown.style.transform = 'translateY(100px)'
+        }
+      },
+      {
+        pageIn : function () {
+          plane1.style.transform = 'translate(0, 0)'
+          plane2.style.transform = 'translate(0, 0)'
+          plane3.style.transform = 'translate(0, 0)'
+        },
+        pageOut : function () {
+
+          plane1.style.transform = 'translate(-100px, -100px)'
+          plane2.style.transform = 'translate(-100px, 100px)'
+          plane3.style.transform = 'translate(100px, -100px)'
+        }
+      },
+      {
+        pageIn : function () {
+          pencil1.style.transform  = pencil2.style.transform = pencil3.style.transform = 'translateY(0)'
+
+        },
+        pageOut : function () {
+          pencil1.style.transform  = pencil2.style.transform = pencil3.style.transform = 'translateY(-100px)'
+
+        }
+      },
+      {
+        pageIn : function () {
+          pictures[0].style.transform = 'rotate(0deg)'
+          pictures[1].style.transform = 'rotate(0deg)'
+        },
+        pageOut : function () {
+          pictures[0].style.transform = 'rotate(30deg)'
+          pictures[1].style.transform = 'rotate(-30deg)'
+        }
+      },
+      {
+        pageIn : function () {
+          title.style.transform = 'translateX(0px)'
+          text.style.transform = 'translateX(0px)'
+        },
+        pageOut : function () {
+          title.style.transform = 'translateX(-200px)'
+          text.style.transform = 'translateX(200px)'
+        }
+      }
+    ]
     // 初始化
     contentInitial()
     function contentInitial() {
       contentWrap.style.height = document.documentElement.clientHeight - headerWrap.offsetHeight + 'px'
       for (var i = 0; i < contentLis.length; i++) {
         contentLis[i].style.height = document.documentElement.clientHeight - headerWrap.offsetHeight + 'px'
+        animations[i].pageOut()
       }
     }
-    change(4)
+    change(0)
     autoPlay(1)
     window.onresize = function () {
       contentWrap.style.height = document.documentElement.clientHeight - headerWrap.offsetHeight + 'px'
       contentInitial()
     }
+
+   var test = {
+      a:function () {
+        console.log(1)
+      }
+   }
+
+
 
     // 第一屏轮播
     for(var i = 0; i < navs.length; i++){
@@ -943,14 +1051,7 @@
 
 
     }
-   
-   
-   
-   
-   
-   
-   
-   
+
       // 鼠标滑动过快处理
       teamList.onmouseleave = function () {
         if(ocList.length > 1){
@@ -1072,6 +1173,9 @@
       index = index1
       arrow.style.left = lis[index1].offsetLeft + lis[index1].offsetWidth / 2 - arrow.offsetWidth / 2 + 'px'
       contentList.style.top = -index1 * contentLis[index1].offsetHeight + 'px'
+      animations[oldIndex].pageOut()
+      animations[index].pageIn()
+      oldIndex = index
     }
 
 
