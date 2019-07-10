@@ -1,3 +1,4 @@
+<!--my-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -468,6 +469,9 @@
          height: 100%;
          background: url("img/team.png") no-repeat;
       }
+      #content .contentList .team canvas{
+         position: absolute;
+      }
 
       /*导航点*/
       #navPoint > ul{
@@ -750,15 +754,18 @@
     var imgs = document.querySelectorAll('#content .contentList .imgs > li')
     var imgWrap = document.querySelector('#content .contentList .imgs')
     var team = document.querySelectorAll('#content .contentList .team .people > ul > li')
-    var teamList = document.querySelectorAll('#content .contentList .team .people > ul')
+    var teamList = document.querySelector('#content .contentList .team .people > ul')
+    var teamWrap = document.querySelector('#content .contentList .team .people')
     var animationList = {leftHide:'leftHide', leftShow:'leftShow',rightHide: 'rightHide', rightShow:'rightShow'}
     var navPoints = document.querySelectorAll('#navPoint > ul > li')
     var index = 0
     var timer = 0
     var preIndex = 0
     var imgTimer = 0
-
-
+    var oc = null
+    var ocList = []
+    var bubbleTimer1 = null
+    var bubbleTimer2 = null
     // 初始化
     contentInitial()
     function contentInitial() {
@@ -848,20 +855,130 @@
    for(var i = 0; i < team.length; i++ ){
      (function (i) {
        team[i].onmouseenter = function () {
-         changeAlpha(i)
-         
+           addCanvas(i)
+           changeAlpha(i)
+           ocList.push(oc)
+           creatBubble()
+
        }
        team[i].onmouseleave = function () {
-         for(var i = 0; i < team.length; i++){
-           team[i].style.opacity = 1
-         }
-
+           oc.onmouseleave = function(){
+                  leave()
+             }
        }
      })(i)
    }
 
+   // 产生气泡
+    function creatBubble() {
+      var point = []
+      var deg = 0
+      creatPoint()
+      var ctx = oc.getContext('2d')
+       bubbleTimer1 = setInterval(function () {
+         ctx.clearRect(0, 0, oc.width, oc.height)
+        for(var i = 0; i < point.length; i++) {
+          ctx.save()
+          ctx.fillStyle = 'rgba(' + (point[i].red) + ',' + (point[i].green) + ',' + (point[i].blue) + ',' + (point[i].alpha) + ')'
+          ctx.beginPath()
+          ctx.arc(point[i].x, point[i].y, point[i].r, 0, 2*Math.PI)
+          ctx.fill()
+          ctx.restore()
+        }
+
+        for(var i = 0; i < point.length; i++){
+          point[i].deg += 40
+          point[i].x = point[i].startX + Math.sin(point[i].deg * Math.PI / 180) * point[i].step
+          point[i].y = point[i].startY - point[i].deg * Math.PI / 180 * point[i].step
+          point[i].alpha -= .04
+          if(point[i].x > oc.width || point[i].x < 0){
+            point.splice(i, 1)
+          }
+          else if(point[i].y <= 50){
+            point.splice(i, 1)
+          }
+        }
+      }, 100)
 
 
+
+
+
+      
+      
+      //产生对应的点
+      function creatPoint() {
+         bubbleTimer2 = setInterval(function () {
+          var r = Math.random() * 7 + 8
+          var x = Math.random() * oc.width
+          var y = oc.height - r
+          var red = Math.random() * 255
+          var green = Math.random() * 255
+          var blue = Math.random() * 255
+          var alpha = 1
+          var step = Math.random() * 10 + 25
+          var startX = x
+          var startY = y
+          var deg = 0
+
+           point.push({
+            x:x,
+            y:y,
+            r:r,
+            red:red,
+            green:green,
+            blue:blue,
+            alpha:alpha,
+            step:step,
+            startX:startX,
+            startY:startY,
+             deg:deg
+          })
+        },100)
+
+
+
+      }
+
+
+
+    }
+   
+   
+   
+   
+   
+   
+   
+   
+      // 鼠标滑动过快处理
+      teamList.onmouseleave = function () {
+        if(ocList.length > 1){
+          leave()
+        }
+      }
+    
+   // 离开函数
+   function leave() {
+     for(var i = 0; i < team.length; i++){
+       team[i].style.opacity = 1
+     }
+     for(var j = ocList.length - 1; j >= 0; j-- ){
+       ocList[j].remove()
+       ocList.splice(j,1)
+     }
+     clearInterval(bubbleTimer1)
+     clearInterval(bubbleTimer2)
+   }
+    
+   // 添加Canvas
+    function addCanvas(index) {
+      oc = document.createElement('canvas')
+      oc.width =118
+      oc.height = 448 * 2 / 3
+      oc.style.left = team[index].offsetLeft + teamList.offsetLeft + 'px'
+      teamWrap.appendChild(oc)
+    }
 
    //右侧导航
    for(var i = 0; i < navPoints.length; i++ ){
@@ -873,7 +990,6 @@
      })(i)
    }
 
-   
    // 改变teamList透明度
    function changeAlpha(index) {
      for(var i = 0; i < team.length; i++){
