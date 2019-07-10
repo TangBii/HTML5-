@@ -64,6 +64,27 @@
          margin-top: 30px;
       }
 
+      #header .musicButton{
+         position: relative;
+         float: left;
+         width: 25px;
+         height: 25px;
+         margin: 43px 0 0 3px;
+         cursor: pointer;
+         border-radius: 50%;
+      }
+      #header .musicControl{
+         position: absolute;
+         left: 0;
+         bottom: 0;
+         right: 0;
+         top: 0;
+         margin: auto;
+         width: 14px;
+         height: 14px;
+         background: url("img/musicoff.gif");
+      }
+
       #header .list {
          float: right;
          margin-top: 50px;
@@ -529,6 +550,10 @@
          <div class="logo">
             <h1><img src="img/logo.png" alt=""></h1>
          </div>
+         <div class="musicButton">
+            <audio src="img/back.mp3" autoplay loop></audio>
+            <div class="musicControl"></div>
+         </div>
          <nav class="nav">
             <ul class="list clearfix">
                <li>
@@ -798,6 +823,10 @@
     var pictures = document.querySelectorAll('.about .imgs > .item')
     var title = document.querySelector('.team .header')
     var text = document.querySelector('.team .text')
+    var musicButton = document.querySelector('#header .musicButton')
+    var musicControl= document.querySelector('#header .musicControl')
+    var music = document.getElementsByTagName('audio')[0]
+
     var oldIndex = 0
     var index = 0
     var timer = 0
@@ -874,20 +903,18 @@
         animations[i].pageOut()
       }
     }
-    change(0)
+    setTimeout(function () {
+      change(0)
+    }, 1000)
     autoPlay(1)
     window.onresize = function () {
       contentWrap.style.height = document.documentElement.clientHeight - headerWrap.offsetHeight + 'px'
       contentInitial()
     }
-
-   var test = {
-      a:function () {
-        console.log(1)
+    animations[0].pageOut()
+      if(!music.paused){
+        musicControl.style.background =" url('img/musicon.gif')"
       }
-   }
-
-
 
     // 第一屏轮播
     for(var i = 0; i < navs.length; i++){
@@ -1058,7 +1085,26 @@
           leave()
         }
       }
-    
+
+      // 音乐控制
+      musicButton.onclick = function () {
+            musicToggle()
+      }
+
+
+
+   // 音乐控制函数
+     function musicToggle() {
+       if(music.paused){
+         music.play()
+         musicControl.style.background =" url('img/musicon.gif')"
+       }
+       else {
+         music.pause()
+         musicControl.style.background =" url('img/musicoff.gif')"
+       }
+     }
+
    // 离开函数
    function leave() {
      for(var i = 0; i < team.length; i++){
@@ -1177,7 +1223,6 @@
       animations[index].pageIn()
       oldIndex = index
     }
-
 
   } //onload
 </script>
