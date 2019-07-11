@@ -540,18 +540,50 @@
          transition: 1s transform;
       }
 
+      /*开机动画*/
+      #wrap,.mask{
+         width: 100%;
+         height: 100%;
+      }
+      .mask{
+         position: absolute;
+         z-index:10;
+      }
+      .mask > .line{
+         position: absolute;
+         background: white;
+         height: 4px;
+         top: 50%;
+         width: 0;
+         transition: 1s;
+      }
+      .mask > .up,.down{
+         position: absolute;
+         height: 50%;
+         width: 100%;
+         background: deepskyblue;
+         transition: 1s;
+      }
+      .mask > .down{
+         bottom: 0;
+      }
 
    </style>
 </head>
 <body>
 <section id="wrap">
+   <div class="mask">
+      <div class="up"></div>
+      <div class="down"></div>
+      <div class="line"></div>
+   </div>
    <div id="headerWrap">
       <header id="header">
          <div class="logo">
             <h1><img src="img/logo.png" alt=""></h1>
          </div>
          <div class="musicButton">
-            <audio src="img/back.mp3" autoplay loop></audio>
+            <audio src="img/back.mp3"  loop></audio>
             <div class="musicControl"></div>
          </div>
          <nav class="nav">
@@ -826,7 +858,10 @@
     var musicButton = document.querySelector('#header .musicButton')
     var musicControl= document.querySelector('#header .musicControl')
     var music = document.getElementsByTagName('audio')[0]
-
+    var mask = document.getElementsByClassName('mask')[0]
+    var up = document.getElementsByClassName('up')[0]
+    var down = document.getElementsByClassName('down')[0]
+    var line = document.getElementsByClassName('line')[0]
     var oldIndex = 0
     var index = 0
     var timer = 0
@@ -836,6 +871,35 @@
     var ocList = []
     var bubbleTimer1 = null
     var bubbleTimer2 = null
+    var arr = ['bg1.jpg','bg2.jpg','bg3.jpg','bg4.jpg','bg5.jpg','about1.jpg','about2.jpg','about3.jpg','about4.jpg','worksimg1.jpg','worksimg2.jpg','worksimg3.jpg','worksimg4.jpg','team.png','greenLine.png'];
+    var loadingFlag = 0
+    // 开机动画
+    for(var i = 0; i < arr.length; i++){
+      var img = new Image()
+      img.src = 'img/' + arr[i]
+        img.onload = function(){
+          loadingFlag++
+          line.style.width = loadingFlag / arr.length * 100 + '%'
+        }
+    }
+    line.addEventListener('transitionend', function () {
+      if(loadingFlag === arr.length){
+        line.style.display = 'none'
+      }
+      up.style.height= 0
+      down.style.height = 0
+      change(0)
+      autoPlay(1)
+    })
+
+    up.addEventListener('transitionend', function () {
+      mask.remove()
+      music.play()
+      if(!music.paused){
+        musicControl.style.background =" url('img/musicon.gif')"
+      }
+
+    })
     // 出入场动画
     var animations = [
       {
@@ -903,19 +967,10 @@
         animations[i].pageOut()
       }
     }
-    setTimeout(function () {
-      change(0)
-    }, 1000)
-    autoPlay(1)
     window.onresize = function () {
       contentWrap.style.height = document.documentElement.clientHeight - headerWrap.offsetHeight + 'px'
       contentInitial()
     }
-    animations[0].pageOut()
-      if(!music.paused){
-        musicControl.style.background =" url('img/musicon.gif')"
-      }
-
     // 第一屏轮播
     for(var i = 0; i < navs.length; i++){
       (function (i) {
